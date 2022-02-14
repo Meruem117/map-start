@@ -1,15 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <AMap />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AMap from './components/AMap.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    AMap
   }
 }
 </script>
@@ -20,7 +19,5 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
