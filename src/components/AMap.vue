@@ -5,12 +5,10 @@
 <script>
 import { shallowRef } from '@vue/reactivity'
 import AMapLoader from '@amap/amap-jsapi-loader'
+import { apiKey } from '../key'
 
 export default {
   name: 'AMap',
-  props: {
-    msg: String
-  },
   setup() {
     const map = shallowRef(null)
     return {
@@ -20,7 +18,7 @@ export default {
   methods: {
     initMap() {
       AMapLoader.load({
-        key: "1bef5e6bc5ac9412518943a96c8a1f28",
+        key: apiKey,
         version: "2.0",
         plugins: [''],
       }).then((AMap) => {
@@ -30,7 +28,7 @@ export default {
           center: [105.602725, 37.076636],
         })
       }).catch(e => {
-        console.log(e)
+        console.error(e)
       })
     },
   },
