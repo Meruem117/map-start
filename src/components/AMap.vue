@@ -1,5 +1,7 @@
 <template>
-  <div id="container"></div>
+  <div class="page">
+    <div id="a-map" class="map"></div>
+  </div>
 </template>
 
 <script>
@@ -15,6 +17,9 @@ export default {
       map,
     }
   },
+  mounted() {
+    this.initMap()
+  },
   methods: {
     initMap() {
       AMapLoader.load({
@@ -22,7 +27,7 @@ export default {
         version: "2.0",
         plugins: [''],
       }).then((AMap) => {
-        this.map = new AMap.Map("container", {
+        this.map = new AMap.Map("a-map", {
           viewMode: "3D",
           zoom: 5,
           center: [105.602725, 37.076636],
@@ -31,18 +36,20 @@ export default {
         console.error(e)
       })
     },
-  },
-  mounted() {
-    this.initMap()
   }
 }
 </script>
 
-<style scoped>
-#container {
+<style lang="less" scoped>
+.page {
   padding: 0px;
   margin: 0px;
-  width: 100%;
-  height: 800px;
+  width: 100vh;
+  height: 100vh;
+
+  .map {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
