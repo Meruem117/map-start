@@ -29,8 +29,8 @@ export default {
       }).then((AMap) => {
         this.map = new AMap.Map("a-map", {
           viewMode: "3D",
-          zoom: 5,
-          center: [105.602725, 37.076636],
+          zoom: 10,
+          center: [119.974092, 31.811313],
         })
       }).catch(e => {
         console.error(e)
@@ -42,10 +42,10 @@ export default {
 
 <style lang="less" scoped>
 .page {
+  width: 100%;
+  height: 900px;
   padding: 0px;
   margin: 0px;
-  width: 100vh;
-  height: 100vh;
 
   .map {
     width: 100%;
