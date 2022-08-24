@@ -31,6 +31,7 @@ export default {
           viewMode: "3D",
           zoom: 10,
           center: [119.974092, 31.811313],
+          mapStyle: 'amap://styles/graffiti'
         })
       }).catch(e => {
         console.error(e)
