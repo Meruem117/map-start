@@ -26,17 +26,25 @@ export default {
         key: apiKey,
         version: "2.0",
         plugins: [''],
-      }).then((AMap) => {
+      }).then(AMap => {
         this.map = new AMap.Map("a-map", {
           viewMode: "3D",
           zoom: 10,
           center: [119.974092, 31.811313],
           mapStyle: 'amap://styles/graffiti'
         })
+        this.initMarker(AMap)
       }).catch(e => {
         console.error(e)
       })
     },
+    initMarker(AMap) {
+      let marker = new AMap.Marker({
+        position: new AMap.LngLat(119.974092, 31.811313),
+        title: '常州'
+      })
+      this.map.add(marker)
+    }
   }
 }
 </script>
