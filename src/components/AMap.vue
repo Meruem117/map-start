@@ -3,16 +3,29 @@
     <div class="map-box">
       <div id="a-map" class="map"></div>
     </div>
+    <div class="operate-box">
+      <el-affix :offset="20">
+        <el-button type="primary">
+          <el-icon :size="20">
+            <Operation />
+          </el-icon>
+        </el-button>
+      </el-affix>
+    </div>
   </div>
 </template>
 
 <script>
 import { shallowRef } from '@vue/reactivity'
 import AMapLoader from '@amap/amap-jsapi-loader'
+import { Operation } from '@element-plus/icons-vue'
 import { apiKey } from '../key'
 
 export default {
   name: 'AMap',
+  components: {
+    Operation
+  },
   setup() {
     const map = shallowRef(null)
     return {
@@ -33,7 +46,7 @@ export default {
           viewMode: "3D",
           zoom: 10,
           center: [119.974092, 31.811313],
-          mapStyle: 'amap://styles/graffiti'
+          mapStyle: 'amap://styles/blue'
         })
         this.initMarker(AMap)
       }).catch(e => {
@@ -71,5 +84,13 @@ export default {
     }
   }
 
+  .operate-box {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+  }
 }
 </style>
