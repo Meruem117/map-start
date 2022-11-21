@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "element-plus": "^2.2.22",
     "vue": "^3.0.0"
   },
   "devDependencies": {
