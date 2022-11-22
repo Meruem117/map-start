@@ -3,8 +3,7 @@
     <div class="map-box">
       <div id="a-map" class="map"></div>
     </div>
-    <div class="operate-box">
-    </div>
+    <div class="location-box">{{ }}</div>
   </div>
 </template>
 
@@ -19,8 +18,10 @@ export default {
   },
   setup() {
     const map = shallowRef(null)
+    const marker = shallowRef(null)
     return {
-      map
+      map,
+      marker
     }
   },
   mounted() {
@@ -33,6 +34,7 @@ export default {
         version: "2.0",
         plugins: [''],
       }).then(AMap => {
+        let that = this
         this.map = new AMap.Map("a-map", {
           viewMode: "3D",
           zoom: 10,
@@ -40,16 +42,21 @@ export default {
           mapStyle: 'amap://styles/blue'
         })
         this.initMarker(AMap)
+        this.map.on('click', function (e) {
+          let lng = e.lnglat.getLng()
+          let lat = e.lnglat.getLat()
+          that.marker.setPosition([lng, lat])
+        })
       }).catch(e => {
         console.error(e)
       })
     },
     initMarker(AMap) {
-      let marker = new AMap.Marker({
+      this.marker = new AMap.Marker({
         position: new AMap.LngLat(119.974092, 31.811313),
         title: '常州'
       })
-      this.map.add(marker)
+      this.map.add(this.marker)
     }
   }
 }
@@ -75,8 +82,14 @@ export default {
     }
   }
 
-  .operate-box {
+  .location-box {
     position: absolute;
+    top: 50px;
+    left: 100px;
+    width: 240px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: #fff;
   }
 }
 </style>
