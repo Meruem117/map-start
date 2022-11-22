@@ -3,12 +3,12 @@
     <div class="map-box">
       <div id="a-map" class="map"></div>
     </div>
-    <div class="location-box">{{ }}</div>
+    <div class="location-box">{{ lng }}, {{ lat }}</div>
   </div>
 </template>
 
 <script>
-import { shallowRef } from '@vue/reactivity'
+import { shallowRef, ref } from '@vue/reactivity'
 import AMapLoader from '@amap/amap-jsapi-loader'
 import { apiKey } from '../key'
 
@@ -19,9 +19,13 @@ export default {
   setup() {
     const map = shallowRef(null)
     const marker = shallowRef(null)
+    const lng = ref('')
+    const lat = ref('')
     return {
       map,
-      marker
+      marker,
+      lng,
+      lat
     }
   },
   mounted() {
@@ -45,6 +49,8 @@ export default {
         this.map.on('click', function (e) {
           let lng = e.lnglat.getLng()
           let lat = e.lnglat.getLat()
+          that.lng = lng
+          that.lat = lat
           that.marker.setPosition([lng, lat])
         })
       }).catch(e => {
@@ -53,8 +59,7 @@ export default {
     },
     initMarker(AMap) {
       this.marker = new AMap.Marker({
-        position: new AMap.LngLat(119.974092, 31.811313),
-        title: '常州'
+        position: new AMap.LngLat(119.974092, 31.811313)
       })
       this.map.add(this.marker)
     }
@@ -88,6 +93,10 @@ export default {
     left: 100px;
     width: 240px;
     height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
     border-radius: 10px;
     background-color: #fff;
   }
