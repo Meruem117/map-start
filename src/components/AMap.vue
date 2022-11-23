@@ -10,11 +10,11 @@
         <v-radio label="Rect" value="3" color="secondary"></v-radio>
       </v-radio-group>
     </div>
-    <div class="info-box">
+    <v-card variant="outlined" class="info-box" v-show="operate">
       <div v-show="operate === '1'">
         {{ markerData.lng }}, {{ markerData.lat }}
       </div>
-    </div>
+    </v-card>
   </div>
 </template>
 
@@ -27,16 +27,24 @@ export default {
   name: 'AMap',
   setup() {
     const map = shallowRef(null)
+    const mouseTool = shallowRef(null)
     const operate = ref('')
     const marker = shallowRef(null)
     const markerData = reactive({
       lng: '',
       lat: ''
     })
+    const polygon = shallowRef(null)
+    const polygonData = reactive({
+      points: [],
+      pointsStr: ''
+    })
     return {
       map,
+      mouseTool,
       operate,
       marker, markerData,
+      polygon, polygonData
     }
   },
   mounted() {
@@ -56,6 +64,7 @@ export default {
           mapStyle: 'amap://styles/blue'
         })
         this.initMarker(AMap)
+        this.initMouseTool(AMap)
       }).catch(e => {
         console.error(e)
       })
@@ -72,11 +81,25 @@ export default {
           that.marker.setPosition([lng, lat])
         })
       }
+      if (this.operate === '2') {
+        this.mouseTool.polygon()
+        this.mouseTool.on('draw', function (e) {
+          let arr = e.obj.getPath()
+          let points = arr.map(item => {
+            return [item.lng, item.lat]
+          })
+          that.polygonData.points = points
+          that.polygonData.pointsStr = JSON.stringify(points)
+        })
+      }
     },
     initMarker(AMap) {
       this.marker = new AMap.Marker({
         position: new AMap.LngLat(119.974092, 31.811313)
       })
+    },
+    initMouseTool(AMap) {
+      this.mouseTool = new AMap.MouseTool(this.map)
     },
   }
 }
