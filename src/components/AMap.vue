@@ -3,6 +3,7 @@
     <div class="map-box">
       <div id="a-map" class="map"></div>
     </div>
+    <div class="operate-box"></div>
     <div class="location-box">{{ lng }}, {{ lat }}</div>
   </div>
 </template>
@@ -87,10 +88,16 @@ export default {
     }
   }
 
+  .operate-box {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+  }
+
   .location-box {
     position: absolute;
     top: 50px;
-    left: 100px;
+    right: 100px;
     width: 240px;
     height: 60px;
     display: flex;

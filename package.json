@@ -23,7 +23,8 @@
     "eslint-plugin-vue": "^7.0.0",
     "less": "^4.1.3",
     "less-loader": "7.x",
-    "style-resources-loader": "^1.5.0"
+    "style-resources-loader": "^1.5.0",
+    "vuetify": "^2.6.12"
   },
   "eslintConfig": {
     "root": true,
