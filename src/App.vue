@@ -1,5 +1,9 @@
 <template>
-  <AMap />
+  <v-app>
+    <v-main>
+      <AMap />
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -7,18 +11,13 @@ import AMap from './components/AMap.vue'
 
 export default {
   name: 'App',
+
   components: {
-    AMap
-  }
+    AMap,
+  },
+
+  data: () => ({
+    //
+  }),
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  padding: 16px;
-}
-</style>

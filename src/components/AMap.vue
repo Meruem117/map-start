@@ -15,8 +15,6 @@ import { apiKey } from '../key'
 
 export default {
   name: 'AMap',
-  components: {
-  },
   setup() {
     const map = shallowRef(null)
     const marker = shallowRef(null)
