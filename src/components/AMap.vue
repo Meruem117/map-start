@@ -3,13 +3,23 @@
     <div class="map-box">
       <div id="a-map" class="map"></div>
     </div>
-    <div class="operate-box"></div>
-    <div class="location-box">{{ lng }}, {{ lat }}</div>
+    <div class="operate-box">
+      <v-radio-group inline v-model="operate" @change="changeOperate">
+        <v-radio label="Marker" value="1" color="secondary"></v-radio>
+        <v-radio label="Polygon" value="2" color="secondary"></v-radio>
+        <v-radio label="Rect" value="3" color="secondary"></v-radio>
+      </v-radio-group>
+    </div>
+    <div class="info-box">
+      <div v-show="operate === '1'">
+        {{ markerData.lng }}, {{ markerData.lat }}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { shallowRef, ref } from '@vue/reactivity'
+import { shallowRef, ref, reactive } from '@vue/reactivity'
 import AMapLoader from '@amap/amap-jsapi-loader'
 import { apiKey } from '../key'
 
@@ -17,14 +27,16 @@ export default {
   name: 'AMap',
   setup() {
     const map = shallowRef(null)
+    const operate = ref('')
     const marker = shallowRef(null)
-    const lng = ref('')
-    const lat = ref('')
+    const markerData = reactive({
+      lng: '',
+      lat: ''
+    })
     return {
       map,
-      marker,
-      lng,
-      lat
+      operate,
+      marker, markerData,
     }
   },
   mounted() {
@@ -37,7 +49,6 @@ export default {
         version: "2.0",
         plugins: [''],
       }).then(AMap => {
-        let that = this
         this.map = new AMap.Map("a-map", {
           viewMode: "3D",
           zoom: 10,
@@ -45,23 +56,28 @@ export default {
           mapStyle: 'amap://styles/blue'
         })
         this.initMarker(AMap)
-        this.map.on('click', function (e) {
-          let lng = e.lnglat.getLng()
-          let lat = e.lnglat.getLat()
-          that.lng = lng
-          that.lat = lat
-          that.marker.setPosition([lng, lat])
-        })
       }).catch(e => {
         console.error(e)
       })
+    },
+    changeOperate() {
+      let that = this
+      if (this.operate === '1') {
+        this.map.add(this.marker)
+        this.map.on('click', function (e) {
+          let lng = e.lnglat.getLng()
+          let lat = e.lnglat.getLat()
+          that.markerData.lng = lng
+          that.markerData.lat = lat
+          that.marker.setPosition([lng, lat])
+        })
+      }
     },
     initMarker(AMap) {
       this.marker = new AMap.Marker({
         position: new AMap.LngLat(119.974092, 31.811313)
       })
-      this.map.add(this.marker)
-    }
+    },
   }
 }
 </script>
@@ -92,7 +108,7 @@ export default {
     left: 50px;
   }
 
-  .location-box {
+  .info-box {
     position: absolute;
     top: 50px;
     right: 100px;
@@ -102,8 +118,6 @@ export default {
     align-items: center;
     justify-content: center;
     font-size: 20px;
-    border-radius: 10px;
-    background-color: #fff;
   }
 }
 </style>
