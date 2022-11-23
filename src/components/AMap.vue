@@ -9,10 +9,16 @@
         <v-radio label="Polygon" value="2" color="secondary"></v-radio>
         <v-radio label="Rect" value="3" color="secondary"></v-radio>
       </v-radio-group>
+      <v-btn variant="outlined" @click="clearMap">
+        Clear
+      </v-btn>
     </div>
     <v-card variant="outlined" class="info-box" v-show="operate">
       <div v-show="operate === '1'">
         {{ markerData.lng }}, {{ markerData.lat }}
+      </div>
+      <div v-show="operate === '2'">
+        {{ polygonData.pointsStr }}
       </div>
     </v-card>
   </div>
@@ -55,7 +61,7 @@ export default {
       AMapLoader.load({
         key: apiKey,
         version: "2.0",
-        plugins: [''],
+        plugins: ['AMap.MouseTool'],
       }).then(AMap => {
         this.map = new AMap.Map("a-map", {
           viewMode: "3D",
@@ -101,6 +107,12 @@ export default {
     initMouseTool(AMap) {
       this.mouseTool = new AMap.MouseTool(this.map)
     },
+    clearMap() {
+      this.map.clearMap()
+      this.operate = ''
+      this.markerData = {}
+      this.polygonData = {}
+    },
   }
 }
 </script>
@@ -135,11 +147,12 @@ export default {
     position: absolute;
     top: 50px;
     right: 100px;
-    width: 240px;
-    height: 60px;
+    width: 300px;
+    padding: 15px 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: auto;
     font-size: 20px;
   }
 }
