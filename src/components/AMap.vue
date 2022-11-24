@@ -43,7 +43,6 @@ export default {
     })
     const polygon = shallowRef(null)
     const polygonData = reactive({
-      points: [],
       pointsStr: ''
     })
     return {
@@ -73,6 +72,8 @@ export default {
           mapStyle: 'amap://styles/blue'
         })
         let that = this
+        this.initMarker(AMap)
+        this.initPolygon(AMap)
         this.mouseTool = new AMap.MouseTool(this.map)
         this.mouseTool.polygon()
         this.mouseTool.on('draw', function (e) {
@@ -80,7 +81,7 @@ export default {
           let points = arr.map(item => {
             return [item.lng, item.lat]
           })
-          that.polygonData.points = points
+          that.polygon.setPath(points)
           that.polygonData.pointsStr = JSON.stringify(points)
           that.mouseTool.close(true)
         })
@@ -88,24 +89,11 @@ export default {
         console.error(e)
       })
     },
-    changeOperate() {
-      if (this.operate === '1') {
-        this.loadMarker(this.AMap)
-      } else {
-        this.map.remove(this.marker)
-        this.marker = null
-      }
-      // if (this.operate === '2') {
-      // } else {
-      //   this.mouseTool.close(true)
-      // }
-    },
-    loadMarker(AMap) {
+    initMarker(AMap) {
       let that = this
       this.marker = new AMap.Marker({
         position: new AMap.LngLat(119.974092, 31.811313)
       })
-      this.map.add(this.marker)
       this.map.on('click', function (e) {
         let lng = e.lnglat.getLng()
         let lat = e.lnglat.getLat()
@@ -113,6 +101,23 @@ export default {
         that.markerData.lat = lat
         that.marker.setPosition([lng, lat])
       })
+    },
+    initPolygon(AMap) {
+      this.polygon = new AMap.Polygon({
+        path: []
+      })
+    },
+    changeOperate() {
+      if (this.operate === '1') {
+        this.map.add(this.marker)
+      } else {
+        this.map.remove(this.marker)
+      }
+      if (this.operate === '2') {
+        this.map.add(this.polygon)
+      } else {
+        this.map.remove(this.polygon)
+      }
     },
     clearMap() { },
   }
