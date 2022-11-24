@@ -32,6 +32,7 @@ import { apiKey } from '../key'
 export default {
   name: 'AMap',
   setup() {
+    const AMap = shallowRef(null)
     const map = shallowRef(null)
     const mouseTool = shallowRef(null)
     const operate = ref('')
@@ -46,6 +47,7 @@ export default {
       pointsStr: ''
     })
     return {
+      AMap,
       map,
       mouseTool,
       operate,
@@ -63,31 +65,15 @@ export default {
         version: "2.0",
         plugins: ['AMap.MouseTool'],
       }).then(AMap => {
+        this.AMap = AMap
         this.map = new AMap.Map("a-map", {
           viewMode: "3D",
           zoom: 10,
           center: [119.974092, 31.811313],
           mapStyle: 'amap://styles/blue'
         })
-        this.initMarker(AMap)
-        this.initMouseTool(AMap)
-      }).catch(e => {
-        console.error(e)
-      })
-    },
-    changeOperate() {
-      let that = this
-      if (this.operate === '1') {
-        this.map.add(this.marker)
-        this.map.on('click', function (e) {
-          let lng = e.lnglat.getLng()
-          let lat = e.lnglat.getLat()
-          that.markerData.lng = lng
-          that.markerData.lat = lat
-          that.marker.setPosition([lng, lat])
-        })
-      }
-      if (this.operate === '2') {
+        let that = this
+        this.mouseTool = new AMap.MouseTool(this.map)
         this.mouseTool.polygon()
         this.mouseTool.on('draw', function (e) {
           let arr = e.obj.getPath()
@@ -96,23 +82,39 @@ export default {
           })
           that.polygonData.points = points
           that.polygonData.pointsStr = JSON.stringify(points)
+          that.mouseTool.close(true)
         })
-      }
+      }).catch(e => {
+        console.error(e)
+      })
     },
-    initMarker(AMap) {
+    changeOperate() {
+      if (this.operate === '1') {
+        this.loadMarker(this.AMap)
+      } else {
+        this.map.remove(this.marker)
+        this.marker = null
+      }
+      // if (this.operate === '2') {
+      // } else {
+      //   this.mouseTool.close(true)
+      // }
+    },
+    loadMarker(AMap) {
+      let that = this
       this.marker = new AMap.Marker({
         position: new AMap.LngLat(119.974092, 31.811313)
       })
+      this.map.add(this.marker)
+      this.map.on('click', function (e) {
+        let lng = e.lnglat.getLng()
+        let lat = e.lnglat.getLat()
+        that.markerData.lng = lng
+        that.markerData.lat = lat
+        that.marker.setPosition([lng, lat])
+      })
     },
-    initMouseTool(AMap) {
-      this.mouseTool = new AMap.MouseTool(this.map)
-    },
-    clearMap() {
-      this.map.clearMap()
-      this.operate = ''
-      this.markerData = {}
-      this.polygonData = {}
-    },
+    clearMap() { },
   }
 }
 </script>
