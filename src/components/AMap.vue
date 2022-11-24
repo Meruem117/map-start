@@ -32,10 +32,9 @@ import { apiKey } from '../key'
 export default {
   name: 'AMap',
   setup() {
-    const AMap = shallowRef(null)
     const map = shallowRef(null)
-    const mouseTool = shallowRef(null)
     const operate = ref('')
+    const mouseTool = shallowRef(null)
     const marker = shallowRef(null)
     const markerData = reactive({
       lng: '',
@@ -46,10 +45,9 @@ export default {
       pointsStr: ''
     })
     return {
-      AMap,
       map,
-      mouseTool,
       operate,
+      mouseTool,
       marker, markerData,
       polygon, polygonData
     }
@@ -64,27 +62,14 @@ export default {
         version: "2.0",
         plugins: ['AMap.MouseTool'],
       }).then(AMap => {
-        this.AMap = AMap
         this.map = new AMap.Map("a-map", {
           viewMode: "3D",
           zoom: 10,
           center: [119.974092, 31.811313],
           mapStyle: 'amap://styles/blue'
         })
-        let that = this
         this.initMarker(AMap)
         this.initPolygon(AMap)
-        this.mouseTool = new AMap.MouseTool(this.map)
-        this.mouseTool.polygon()
-        this.mouseTool.on('draw', function (e) {
-          let arr = e.obj.getPath()
-          let points = arr.map(item => {
-            return [item.lng, item.lat]
-          })
-          that.polygon.setPath(points)
-          that.polygonData.pointsStr = JSON.stringify(points)
-          that.mouseTool.close(true)
-        })
       }).catch(e => {
         console.error(e)
       })
@@ -103,8 +88,21 @@ export default {
       })
     },
     initPolygon(AMap) {
+      this.mouseTool = new AMap.MouseTool(this.map)
       this.polygon = new AMap.Polygon({
         path: []
+      })
+    },
+    loadMouseTool() {
+      let that = this
+      this.mouseTool.polygon()
+      this.mouseTool.on('draw', function (e) {
+        let arr = e.obj.getPath()
+        let points = arr.map(item => {
+          return [item.lng, item.lat]
+        })
+        that.polygon.setPath(points)
+        that.polygonData.pointsStr = JSON.stringify(points)
       })
     },
     changeOperate() {
@@ -114,12 +112,16 @@ export default {
         this.map.remove(this.marker)
       }
       if (this.operate === '2') {
+        this.loadMouseTool()
         this.map.add(this.polygon)
       } else {
+        this.mouseTool.close(true)
         this.map.remove(this.polygon)
       }
     },
-    clearMap() { },
+    clearMap() {
+
+    },
   }
 }
 </script>
