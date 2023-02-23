@@ -1,4 +1,4 @@
-# AMap Start
+# Map Start
 
 ## Project setup
 ```
