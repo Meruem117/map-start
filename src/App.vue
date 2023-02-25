@@ -1,21 +1,9 @@
 <template>
-    <v-app>
-        <v-main>
-            <AMap />
-        </v-main>
-    </v-app>
+    <router-view></router-view>
 </template>
 
 <script>
-import AMap from './components/AMap.vue'
-
 export default {
-    name: 'App',
-    components: {
-        AMap,
-    },
-    data: () => ({
-        //
-    }),
+    name: 'App'
 }
 </script>
