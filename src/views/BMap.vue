@@ -14,14 +14,19 @@ export default {
     name: 'BMap',
     setup() {
         const map = shallowRef(null)
+        const centerPoint = new BMapGL.Point(119.979759, 31.792228)
         return {
-            map
+            map,
+            centerPoint
         }
     },
     mounted() {
         this.map = new BMapGL.Map('b-map')
-        const point = new BMapGL.Point(116.404, 39.915)
-        this.map.centerAndZoom(point, 15)
+        this.map.centerAndZoom(this.centerPoint, 15)
+        this.map.enableScrollWheelZoom(true)
+        this.map.setMapStyleV2({
+            styleId: '073b242e4be0bc629bf89b95f6870c3c'
+        })
     },
     methods: {
 
