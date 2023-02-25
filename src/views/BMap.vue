@@ -7,15 +7,21 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
+import { shallowRef } from 'vue'
+
 export default {
     name: 'BMap',
     setup() {
+        const map = shallowRef(null)
         return {
-
+            map
         }
     },
     mounted() {
-
+        this.map = new BMapGL.Map('b-map')
+        const point = new BMapGL.Point(116.404, 39.915)
+        this.map.centerAndZoom(point, 15)
     },
     methods: {
 
