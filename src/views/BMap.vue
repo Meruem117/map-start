@@ -35,12 +35,12 @@ export default {
                 styleId: '073b242e4be0bc629bf89b95f6870c3c'
             })
             this.initPolygon(this.city.name)
+            this.initMarker(this.city.center)
         },
         initPolygon(city) {
             let that = this
             let boundary = new BMapGL.Boundary()
             boundary.get(city, function (res) {
-                that.map.clearOverlays()
                 res.boundaries.forEach(item => {
                     let points = item.split(';')
                     let bPoints = points.map(item2 => {
@@ -55,7 +55,11 @@ export default {
                     })
                     that.map.addOverlay(polygon)
                 })
-            });
+            })
+        },
+        initMarker(location) {
+            let marker = new BMapGL.Marker(location)
+            this.map.addOverlay(marker)
         }
     }
 }
