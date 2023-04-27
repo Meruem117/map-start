@@ -1,3 +1,4 @@
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const { ak } = require('./src/key')
 
 module.exports = {
@@ -18,5 +19,6 @@ module.exports = {
       args[0].ak = ak
       return args
     })
+    config.plugin('NodePolyfillPlugin').use(NodePolyfillPlugin)
   },
 }
