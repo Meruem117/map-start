@@ -10,6 +10,11 @@ const routes = [
         path: '/bmap',
         name: 'bmap',
         component: () => import('../views/BMap.vue'),
+    },
+    {
+        path: '/cmap',
+        name: 'cmap',
+        component: () => import('../views/CMap.vue'),
     }
 ]
 
