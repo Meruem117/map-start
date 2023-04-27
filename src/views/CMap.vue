@@ -7,20 +7,17 @@
 </template>
 
 <script>
-/* eslint-disable no-undef */
-import { shallowRef } from 'vue'
+import { shallowRef } from '@vue/reactivity'
+import * as Cesium from 'cesium'
+import 'cesium/Build/Cesium/Widgets/widgets.css'
+import { accessToken } from '../key'
 
 export default {
     name: 'CMap',
     setup() {
-        const map = shallowRef(null)
-        const city = {
-            name: '常州市',
-            center: []
-        }
+        const viewer = shallowRef(null)
         return {
-            map,
-            city
+            viewer,
         }
     },
     mounted() {
@@ -28,7 +25,7 @@ export default {
     },
     methods: {
         initMap() {
-
+            Cesium.Ion.defaultAccessToken = accessToken
         },
     }
 }
