@@ -26,6 +26,17 @@ export default {
     methods: {
         initMap() {
             Cesium.Ion.defaultAccessToken = accessToken
+            this.viewer = new Cesium.Viewer('c-map', {
+                terrainProvider: Cesium.createWorldTerrain()
+            })
+            this.viewer.scene.primitives.add(Cesium.createOsmBuildings())
+            this.viewer.camera.flyTo({
+                destination: Cesium.Cartesian3.fromDegrees(-122.4175, 37.655, 400),
+                orientation: {
+                    heading: Cesium.Math.toRadians(0.0),
+                    pitch: Cesium.Math.toRadians(-15.0),
+                }
+            })
         },
     }
 }
