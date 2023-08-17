@@ -1,7 +1,7 @@
 <template>
     <div class="page">
         <div class="map-box">
-            <div id="e-map" class="map"></div>
+            <div id="e-map" class="map" @click="resetMap"></div>
         </div>
     </div>
 </template>
@@ -18,7 +18,9 @@ export default {
     setup() {
         const chart = shallowRef(null)
         return {
-            chart
+            chart,
+            hasClick: false,
+            timer: null
         }
     },
     mounted() {
@@ -34,13 +36,25 @@ export default {
             let option = this.getOption(data, 'china')
             this.chart.setOption(option, true)
             this.chart.on('click', (param) => {
+                this.hasClick = true
                 let city = cityCode.find(item => {
                     return param.name.indexOf(item.name) !== -1
                 })
                 if (city && city.adcode) {
                     this.loadChart(city.adcode, param.name)
+                } else {
+                    this.hasClick = false
                 }
             })
+        },
+
+        resetMap() {
+            if (this.hasClick) return
+            let data = [
+                { name: '江苏', value: 100 }
+            ]
+            let option = this.getOption(data, 'china')
+            this.chart.setOption(option, true)
         },
 
         loadChart(code, name) {
@@ -54,6 +68,7 @@ export default {
                 ]
                 let option = this.getOption(data, name)
                 this.chart.setOption(option, true)
+                this.hasClick = false
             })
         },
 
