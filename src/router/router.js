@@ -15,6 +15,11 @@ const routes = [
         path: '/cmap',
         name: 'cmap',
         component: () => import('../views/CMap.vue'),
+    },
+    {
+        path: '/emap',
+        name: 'emap',
+        component: () => import('../views/EMap.vue'),
     }
 ]
 

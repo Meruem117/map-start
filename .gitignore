@@ -23,3 +23,5 @@ pnpm-debug.log*
 *.sw?
 
 key.js
+cityCode.js
+china.json
