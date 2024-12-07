@@ -18,7 +18,8 @@ export default {
                 name: '常州市',
                 zoom: 11,
                 center: new BMapGL.Point(119.64489, 31.629129)
-            }
+            },
+            track: null
         }
     },
     mounted() {
@@ -34,6 +35,7 @@ export default {
             // })
             this.initPolygon(this.city.name)
             this.initMarker(this.city.center)
+            this.addTrackAnimation()
         },
 
         initPolygon(city) {
@@ -47,8 +49,9 @@ export default {
                         return new BMapGL.Point(parseFloat(loc[0]), parseFloat(loc[1]))
                     })
                     let polygon = new BMapGL.Polygon(bPoints, {
-                        fillColor: '#024d6e',
-                        strokeColor: '#adfbfd',
+                        fillColor: '#e0f2fe',
+                        fillOpacity: 0.5,
+                        strokeColor: '#0ea5e9',
                         strokeWeight: 2,
                         strokeOpacity: 0.5
                     })
@@ -60,6 +63,45 @@ export default {
         initMarker(location) {
             let marker = new BMapGL.Marker(location)
             this.map.addOverlay(marker)
+        },
+
+        addTrackAnimation() {
+            this.map.centerAndZoom(new BMapGL.Point(116.297611, 40.047363), 17)
+            const path = [{
+                'lng': 116.297611,
+                'lat': 40.047363
+            }, {
+                'lng': 116.302839,
+                'lat': 40.048219
+            }, {
+                'lng': 116.308301,
+                'lat': 40.050566
+            }, {
+                'lng': 116.305732,
+                'lat': 40.054957
+            }, {
+                'lng': 116.304754,
+                'lat': 40.057953
+            }, {
+                'lng': 116.306487,
+                'lat': 40.058312
+            }, {
+                'lng': 116.307223,
+                'lat': 40.056379
+            }]
+            const points = path.map(item => {
+                return new BMapGL.Point([item.lng, item.lat])
+            })
+            const line = new BMapGL.Polyline(points)
+            this.track = new BMapGLLib.TrackAnimation(this.map, line, {
+                overallView: true,
+                tilt: 30,
+                duration: 20000,
+                delay: 300
+            })
+            setTimeout(() => {
+                this.track.start()
+            }, 3000)
         }
     }
 }
