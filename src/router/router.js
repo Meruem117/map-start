@@ -4,28 +4,28 @@ const routes = [
     {
         path: '/amap',
         name: 'amap',
-        component: () => import('../views/AMap.vue'),
+        component: () => import('../views/AMap.vue')
     },
     {
         path: '/bmap',
         name: 'bmap',
-        component: () => import('../views/BMap.vue'),
+        component: () => import('../views/BaiduMap.vue')
     },
-    {
-        path: '/cmap',
-        name: 'cmap',
-        component: () => import('../views/CMap.vue'),
-    },
-    {
-        path: '/emap',
-        name: 'emap',
-        component: () => import('../views/EMap.vue'),
-    }
+    // {
+    //     path: '/cmap',
+    //     name: 'cmap',
+    //     component: () => import('../views/CMap.vue')
+    // },
+    // {
+    //     path: '/emap',
+    //     name: 'emap',
+    //     component: () => import('../views/EMap.vue')
+    // }
 ]
 
 const router = createRouter({
     history: createWebHashHistory(),
-    routes,
+    routes
 })
 
 export default router

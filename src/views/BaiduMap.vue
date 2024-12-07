@@ -1,26 +1,24 @@
 <template>
     <div class="page">
         <div class="map-box">
-            <div id="b-map" class="map"></div>
+            <div class="map" :id="id"></div>
         </div>
     </div>
 </template>
 
 <script>
 /* eslint-disable no-undef */
-import { shallowRef } from 'vue'
-
 export default {
-    name: 'BMap',
-    setup() {
-        const map = shallowRef(null)
-        const city = {
-            name: '常州市',
-            center: new BMapGL.Point(119.64489, 31.629129)
-        }
+    name: 'BaiduMap',
+    data() {
         return {
-            map,
-            city
+            id: 'b-map',
+            map: null,
+            city: {
+                name: '常州市',
+                zoom: 11,
+                center: new BMapGL.Point(119.64489, 31.629129)
+            }
         }
     },
     mounted() {
@@ -28,15 +26,16 @@ export default {
     },
     methods: {
         initMap() {
-            this.map = new BMapGL.Map('b-map')
-            this.map.centerAndZoom(this.city.center, 11)
+            this.map = new BMapGL.Map(this.id)
+            this.map.centerAndZoom(this.city.center, this.city.zoom)
             this.map.enableScrollWheelZoom(true)
-            this.map.setMapStyleV2({
-                styleId: '073b242e4be0bc629bf89b95f6870c3c'
-            })
+            // this.map.setMapStyleV2({
+            //     styleId: '073b242e4be0bc629bf89b95f6870c3c'
+            // })
             this.initPolygon(this.city.name)
             this.initMarker(this.city.center)
         },
+
         initPolygon(city) {
             let that = this
             let boundary = new BMapGL.Boundary()
@@ -57,6 +56,7 @@ export default {
                 })
             })
         },
+
         initMarker(location) {
             let marker = new BMapGL.Marker(location)
             this.map.addOverlay(marker)
@@ -67,17 +67,16 @@ export default {
 
 <style lang="less" scoped>
 .page {
+    position: relative;
     width: 100%;
     height: 100%;
-    padding: 0px;
-    margin: 0px;
 
     .map-box {
         position: absolute;
         top: 0;
+        left: 0;
         right: 0;
         bottom: 0;
-        left: 0;
 
         .map {
             width: 100%;
