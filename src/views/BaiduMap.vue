@@ -19,6 +19,28 @@ export default {
                 zoom: 11,
                 center: new BMapGL.Point(119.64489, 31.629129)
             },
+            path: [{
+                'lng': 116.297611,
+                'lat': 40.047363
+            }, {
+                'lng': 116.302839,
+                'lat': 40.048219
+            }, {
+                'lng': 116.308301,
+                'lat': 40.050566
+            }, {
+                'lng': 116.305732,
+                'lat': 40.054957
+            }, {
+                'lng': 116.304754,
+                'lat': 40.057953
+            }, {
+                'lng': 116.306487,
+                'lat': 40.058312
+            }, {
+                'lng': 116.307223,
+                'lat': 40.056379
+            }],
             track: null
         }
     },
@@ -35,7 +57,8 @@ export default {
             // })
             this.initPolygon(this.city.name)
             this.initMarker(this.city.center)
-            this.addTrackAnimation()
+            // this.addTrackAnimation()
+            this.addLuShu()
         },
 
         initPolygon(city) {
@@ -67,30 +90,8 @@ export default {
 
         addTrackAnimation() {
             this.map.centerAndZoom(new BMapGL.Point(116.297611, 40.047363), 17)
-            const path = [{
-                'lng': 116.297611,
-                'lat': 40.047363
-            }, {
-                'lng': 116.302839,
-                'lat': 40.048219
-            }, {
-                'lng': 116.308301,
-                'lat': 40.050566
-            }, {
-                'lng': 116.305732,
-                'lat': 40.054957
-            }, {
-                'lng': 116.304754,
-                'lat': 40.057953
-            }, {
-                'lng': 116.306487,
-                'lat': 40.058312
-            }, {
-                'lng': 116.307223,
-                'lat': 40.056379
-            }]
-            const points = path.map(item => {
-                return new BMapGL.Point([item.lng, item.lat])
+            const points = this.path.map(item => {
+                return new BMapGL.Point(item.lng, item.lat)
             })
             const line = new BMapGL.Polyline(points)
             this.track = new BMapGLLib.TrackAnimation(this.map, line, {
@@ -101,6 +102,28 @@ export default {
             })
             setTimeout(() => {
                 this.track.start()
+            }, 3000)
+        },
+
+        addLuShu() {
+            this.map.centerAndZoom(new BMapGL.Point(116.297611, 40.047363), 17)
+            const points = this.path.map(item => {
+                return new BMapGL.Point(item.lng, item.lat)
+            })
+            let polyline = new BMapGL.Polyline(points, {
+                clip: false,
+                geodesic: true,
+                strokeWeight: 3
+            })
+            let lushu = new BMapGLLib.LuShu(this.map, points, {
+                geodesic: true,
+                autoCenter: true,
+                icon: new BMapGL.Icon(require('../assets/logo.svg'), new BMapGL.Size(10, 10)),
+                enableRotation: true
+            })
+            this.map.addOverlay(polyline)
+            setTimeout(() => {
+                lushu.start()
             }, 3000)
         }
     }
