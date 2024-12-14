@@ -3,6 +3,11 @@
         <div class="map-box">
             <div class="map" :id="id"></div>
         </div>
+        <div class="operate-box">
+            <v-btn variant="tonal" @click="startPath">Start</v-btn>
+            <v-btn variant="tonal" @click="pausePath">Pause</v-btn>
+            <v-btn variant="tonal" @click="stopPath">Stop</v-btn>
+        </div>
     </div>
 </template>
 
@@ -41,7 +46,8 @@ export default {
                 'lng': 116.307223,
                 'lat': 40.056379
             }],
-            track: null
+            track: null,
+            lushu: null
         }
     },
     mounted() {
@@ -115,16 +121,25 @@ export default {
                 geodesic: true,
                 strokeWeight: 3
             })
-            let lushu = new BMapGLLib.LuShu(this.map, points, {
+            this.lushu = new BMapGLLib.LuShu(this.map, points, {
                 geodesic: true,
                 autoCenter: true,
-                icon: new BMapGL.Icon(require('../assets/logo.svg'), new BMapGL.Size(10, 10)),
+                icon: new BMapGL.Icon(require('../assets/logo.svg'), new BMapGL.Size(35, 35)),
                 enableRotation: true
             })
             this.map.addOverlay(polyline)
-            setTimeout(() => {
-                lushu.start()
-            }, 3000)
+        },
+
+        startPath() {
+            this.lushu.start()
+        },
+
+        pausePath() {
+            this.lushu.pause()
+        },
+
+        stopPath() {
+            this.lushu.stop()
         }
     }
 }
@@ -147,6 +162,13 @@ export default {
             width: 100%;
             height: 100%;
         }
+    }
+
+    .operate-box {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        z-index: 1000;
     }
 }
 </style>
