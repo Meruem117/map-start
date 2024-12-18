@@ -66,7 +66,7 @@ export default {
                     viewMode: "3D",
                     zoom: 10,
                     center: [119.974092, 31.811313],
-                    mapStyle: 'amap://styles/blue'
+                    // mapStyle: 'amap://styles/blue'
                 })
                 this.initMarker(AMap)
                 this.initPolygon(AMap)
@@ -74,6 +74,7 @@ export default {
                 console.error(e)
             })
         },
+
         initMarker(AMap) {
             let that = this
             this.marker = new AMap.Marker({
@@ -87,12 +88,14 @@ export default {
                 that.marker.setPosition([lng, lat])
             })
         },
+
         initPolygon(AMap) {
             this.mouseTool = new AMap.MouseTool(this.map)
             this.polygon = new AMap.Polygon({
                 path: []
             })
         },
+
         loadMouseTool() {
             let that = this
             this.mouseTool.polygon()
@@ -105,6 +108,7 @@ export default {
                 that.polygonData.pointsStr = JSON.stringify(points)
             })
         },
+
         changeOperate() {
             if (this.operate === '1') {
                 this.map.add(this.marker)
@@ -119,6 +123,7 @@ export default {
                 this.map.remove(this.polygon)
             }
         },
+
         clearMap() {
 
         },
@@ -150,6 +155,10 @@ export default {
         position: absolute;
         top: 50px;
         left: 50px;
+        padding: 20px;
+        border-radius: 12px;
+        background-color: #fff;
+        overflow: hidden;
     }
 
     .info-box {
